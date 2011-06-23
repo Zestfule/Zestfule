@@ -106,7 +106,7 @@ class appdevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
 
     private function get_welcomeRouteInfo()
     {
-        return array(array (), array (  '_controller' => 'Acme\\DemoBundle\\Controller\\WelcomeController::indexAction',), array (), array (  0 =>   array (    0 => 'text',    1 => '/',  ),));
+        return array(array (), array (  '_controller' => 'ZestfuleBlogBundle:Default:index',), array (), array (  0 =>   array (    0 => 'text',    1 => '/',  ),));
     }
 
     private function get_demo_loginRouteInfo()

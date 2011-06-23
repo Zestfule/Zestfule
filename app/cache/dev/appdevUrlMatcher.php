@@ -88,7 +88,7 @@ class appdevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             if (substr($pathinfo, -1) !== '/') {
                 return $this->redirect($pathinfo.'/', '_welcome');
             }
-            return array (  '_controller' => 'Acme\\DemoBundle\\Controller\\WelcomeController::indexAction',  '_route' => '_welcome',);
+            return array (  '_controller' => 'ZestfuleBlogBundle:Default:index',  '_route' => '_welcome',);
         }
 
         // _demo_login

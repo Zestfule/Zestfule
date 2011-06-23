@@ -33,19 +33,6 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
-     * Gets the 'acme.demo.listener' service.
-     *
-     * This service is shared.
-     * This method always returns the same instance of the service.
-     *
-     * @return Acme\DemoBundle\ControllerListener A Acme\DemoBundle\ControllerListener instance.
-     */
-    protected function getAcme_Demo_ListenerService()
-    {
-        return $this->services['acme.demo.listener'] = new \Acme\DemoBundle\ControllerListener($this->get('twig.extension.acme.demo'));
-    }
-
-    /**
      * Gets the 'annotations.cache.array' service.
      *
      * @return Doctrine\Common\Cache\ArrayCache A Doctrine\Common\Cache\ArrayCache instance.
@@ -124,21 +111,22 @@ class appDevDebugProjectContainer extends Container
     {
         $a = $this->get('templating.loader');
 
-        $this->services['assetic.asset_manager'] = $instance = new \Assetic\Factory\LazyAssetManager($this->get('assetic.asset_factory'), array('twig' => new \Assetic\Factory\Loader\CachedFormulaLoader(new \Assetic\Extension\Twig\TwigFormulaLoader($this->get('twig')), new \Assetic\Cache\ConfigCache('/srv/www/zestfule/app/cache/dev/assetic/config'), true)));
+        $this->services['assetic.asset_manager'] = $instance = new \Assetic\Factory\LazyAssetManager($this->get('assetic.asset_factory'), array('twig' => new \Assetic\Factory\Loader\CachedFormulaLoader(new \Assetic\Extension\Twig\TwigFormulaLoader($this->get('twig')), new \Assetic\Cache\ConfigCache('C:\\wamp\\www\\Zestfule\\app/cache/dev/assetic/config'), true)));
 
-        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'FrameworkBundle', '/srv/www/zestfule/app/Resources/FrameworkBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'FrameworkBundle', '/srv/www/zestfule/vendor/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
-        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SecurityBundle', '/srv/www/zestfule/app/Resources/SecurityBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SecurityBundle', '/srv/www/zestfule/vendor/symfony/src/Symfony/Bundle/SecurityBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
-        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'TwigBundle', '/srv/www/zestfule/app/Resources/TwigBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'TwigBundle', '/srv/www/zestfule/vendor/symfony/src/Symfony/Bundle/TwigBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
-        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'MonologBundle', '/srv/www/zestfule/app/Resources/MonologBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'MonologBundle', '/srv/www/zestfule/vendor/symfony/src/Symfony/Bundle/MonologBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
-        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SwiftmailerBundle', '/srv/www/zestfule/app/Resources/SwiftmailerBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SwiftmailerBundle', '/srv/www/zestfule/vendor/symfony/src/Symfony/Bundle/SwiftmailerBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
-        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'DoctrineBundle', '/srv/www/zestfule/app/Resources/DoctrineBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'DoctrineBundle', '/srv/www/zestfule/vendor/symfony/src/Symfony/Bundle/DoctrineBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
-        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'AsseticBundle', '/srv/www/zestfule/app/Resources/AsseticBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'AsseticBundle', '/srv/www/zestfule/vendor/symfony/src/Symfony/Bundle/AsseticBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
-        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SensioFrameworkExtraBundle', '/srv/www/zestfule/app/Resources/SensioFrameworkExtraBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SensioFrameworkExtraBundle', '/srv/www/zestfule/vendor/bundles/Sensio/Bundle/FrameworkExtraBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
-        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'JMSSecurityExtraBundle', '/srv/www/zestfule/app/Resources/JMSSecurityExtraBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'JMSSecurityExtraBundle', '/srv/www/zestfule/vendor/bundles/JMS/SecurityExtraBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
-        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'AcmeDemoBundle', '/srv/www/zestfule/app/Resources/AcmeDemoBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'AcmeDemoBundle', '/srv/www/zestfule/src/Acme/DemoBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
-        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'WebProfilerBundle', '/srv/www/zestfule/app/Resources/WebProfilerBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'WebProfilerBundle', '/srv/www/zestfule/vendor/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
-        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SymfonyWebConfiguratorBundle', '/srv/www/zestfule/app/Resources/SymfonyWebConfiguratorBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SymfonyWebConfiguratorBundle', '/srv/www/zestfule/vendor/bundles/Symfony/Bundle/WebConfiguratorBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
-        $instance->addResource(new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, '', '/srv/www/zestfule/app/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'FrameworkBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/FrameworkBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'FrameworkBundle', 'C:\\wamp\\www\\Zestfule\\vendor\\symfony\\src\\Symfony\\Bundle\\FrameworkBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SecurityBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/SecurityBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SecurityBundle', 'C:\\wamp\\www\\Zestfule\\vendor\\symfony\\src\\Symfony\\Bundle\\SecurityBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'TwigBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/TwigBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'TwigBundle', 'C:\\wamp\\www\\Zestfule\\vendor\\symfony\\src\\Symfony\\Bundle\\TwigBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'MonologBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/MonologBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'MonologBundle', 'C:\\wamp\\www\\Zestfule\\vendor\\symfony\\src\\Symfony\\Bundle\\MonologBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SwiftmailerBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/SwiftmailerBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SwiftmailerBundle', 'C:\\wamp\\www\\Zestfule\\vendor\\symfony\\src\\Symfony\\Bundle\\SwiftmailerBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'DoctrineBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/DoctrineBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'DoctrineBundle', 'C:\\wamp\\www\\Zestfule\\vendor\\symfony\\src\\Symfony\\Bundle\\DoctrineBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'AsseticBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/AsseticBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'AsseticBundle', 'C:\\wamp\\www\\Zestfule\\vendor\\symfony\\src\\Symfony\\Bundle\\AsseticBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SensioFrameworkExtraBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/SensioFrameworkExtraBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SensioFrameworkExtraBundle', 'C:\\wamp\\www\\Zestfule\\vendor\\bundles\\Sensio\\Bundle\\FrameworkExtraBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'JMSSecurityExtraBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/JMSSecurityExtraBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'JMSSecurityExtraBundle', 'C:\\wamp\\www\\Zestfule\\vendor\\bundles\\JMS\\SecurityExtraBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'ZestfuleBlogBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/ZestfuleBlogBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'ZestfuleBlogBundle', 'C:\\wamp\\www\\Zestfule\\src\\Zestfule\\BlogBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'ZestfuleUserBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/ZestfuleUserBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'ZestfuleUserBundle', 'C:\\wamp\\www\\Zestfule\\src\\Zestfule\\UserBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'WebProfilerBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/WebProfilerBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'WebProfilerBundle', 'C:\\wamp\\www\\Zestfule\\vendor\\symfony\\src\\Symfony\\Bundle\\WebProfilerBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Assetic\Factory\Resource\CoalescingDirectoryResource(array(0 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SymfonyWebConfiguratorBundle', 'C:\\wamp\\www\\Zestfule\\app/Resources/SymfonyWebConfiguratorBundle/views', '/^[^.]+\\.[^.]+\\.twig$/'), 1 => new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, 'SymfonyWebConfiguratorBundle', 'C:\\wamp\\www\\Zestfule\\vendor\\bundles\\Symfony\\Bundle\\WebConfiguratorBundle/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'))), 'twig');
+        $instance->addResource(new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($a, '', 'C:\\wamp\\www\\Zestfule\\app/Resources/views', '/^[^.]+\\.[^.]+\\.twig$/'), 'twig');
 
         return $instance;
     }
@@ -298,7 +286,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getDoctrine_Dbal_DefaultConnectionService()
     {
-        return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('dbname' => 'symfony', 'host' => 'localhost', 'user' => 'root', 'password' => '', 'driver' => 'pdo_mysql', 'port' => NULL, 'driverOptions' => array()), $this->get('doctrine.dbal.default_connection.configuration'), $this->get('doctrine.dbal.default_connection.event_manager'));
+        return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('dbname' => 'zestfule', 'host' => 'localhost', 'user' => 'root', 'password' => '', 'driver' => 'pdo_mysql', 'port' => NULL, 'driverOptions' => array()), $this->get('doctrine.dbal.default_connection.configuration'), $this->get('doctrine.dbal.default_connection.event_manager'));
     }
 
     /**
@@ -342,13 +330,13 @@ class appDevDebugProjectContainer extends Container
     protected function getDoctrine_Orm_DefaultConfigurationService()
     {
         $a = new \Doctrine\Common\Cache\ArrayCache();
-        $a->setNamespace('sf2orm_default_5104bdd8856c1ca5014b0f3121769312');
+        $a->setNamespace('sf2orm_default_afb66c3e7fca12bab1c127057bfd4ada');
 
         $b = new \Doctrine\Common\Cache\ArrayCache();
-        $b->setNamespace('sf2orm_default_5104bdd8856c1ca5014b0f3121769312');
+        $b->setNamespace('sf2orm_default_afb66c3e7fca12bab1c127057bfd4ada');
 
         $c = new \Doctrine\Common\Cache\ArrayCache();
-        $c->setNamespace('sf2orm_default_5104bdd8856c1ca5014b0f3121769312');
+        $c->setNamespace('sf2orm_default_afb66c3e7fca12bab1c127057bfd4ada');
 
         $this->services['doctrine.orm.default_configuration'] = $instance = new \Doctrine\ORM\Configuration();
 
@@ -357,7 +345,7 @@ class appDevDebugProjectContainer extends Container
         $instance->setQueryCacheImpl($b);
         $instance->setResultCacheImpl($c);
         $instance->setMetadataDriverImpl(new \Doctrine\ORM\Mapping\Driver\DriverChain());
-        $instance->setProxyDir('/srv/www/zestfule/app/cache/dev/doctrine/orm/Proxies');
+        $instance->setProxyDir('C:\\wamp\\www\\Zestfule\\app/cache/dev/doctrine/orm/Proxies');
         $instance->setProxyNamespace('Proxies');
         $instance->setAutoGenerateProxyClasses(true);
         $instance->setClassMetadataFactoryName('Doctrine\\ORM\\Mapping\\ClassMetadataFactory');
@@ -420,7 +408,6 @@ class appDevDebugProjectContainer extends Container
         $instance->addListenerService('onCoreView', 'view.template_annotation', 0);
         $instance->addListenerService('onCoreResponse', 'cache.annotation', 0);
         $instance->addListenerService('onCoreController', 'security.extra.controller_listener', -255);
-        $instance->addListenerService('onCoreController', 'acme.demo.listener', 0);
         $instance->addListenerService('onCoreResponse', 'web_profiler.debug.toolbar', -128);
 
         return $instance;
@@ -449,7 +436,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getFile_TemporaryStorageService()
     {
-        return $this->services['file.temporary_storage'] = new \Symfony\Component\HttpFoundation\File\SessionBasedTemporaryStorage($this->get('session'), 'ThisTokenIsNotSoSecretChangeIt', '/srv/www/zestfule/app/cache/dev/upload');
+        return $this->services['file.temporary_storage'] = new \Symfony\Component\HttpFoundation\File\SessionBasedTemporaryStorage($this->get('session'), '05bb703d8c4547c2a28530d25d484596c2cdd71e', 'C:\\wamp\\www\\Zestfule\\app/cache/dev/upload');
     }
 
     /**
@@ -462,7 +449,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getFileLocatorService()
     {
-        return $this->services['file_locator'] = new \Symfony\Component\HttpKernel\Config\FileLocator($this->get('kernel'), '/srv/www/zestfule/app/Resources');
+        return $this->services['file_locator'] = new \Symfony\Component\HttpKernel\Config\FileLocator($this->get('kernel'), 'C:\\wamp\\www\\Zestfule\\app/Resources');
     }
 
     /**
@@ -488,7 +475,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getForm_CsrfProviderService()
     {
-        return $this->services['form.csrf_provider'] = new \Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider($this->get('session'), 'ThisTokenIsNotSoSecretChangeIt');
+        return $this->services['form.csrf_provider'] = new \Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider($this->get('session'), '05bb703d8c4547c2a28530d25d484596c2cdd71e');
     }
 
     /**
@@ -975,7 +962,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getMailerService()
     {
-        require_once '/srv/www/zestfule/vendor/swiftmailer/lib/swift_init.php';
+        require_once 'C:\\wamp\\www\\Zestfule\\vendor\\swiftmailer\\lib/swift_init.php';
 
         return $this->services['mailer'] = new \Swift_Mailer($this->get('swiftmailer.transport'));
     }
@@ -1016,7 +1003,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getMonolog_Handler_MainService()
     {
-        return $this->services['monolog.handler.main'] = new \Monolog\Handler\StreamHandler('/srv/www/zestfule/app/logs/dev.log', 100, false);
+        return $this->services['monolog.handler.main'] = new \Monolog\Handler\StreamHandler('C:\\wamp\\www\\Zestfule\\app/logs/dev.log', 100, false);
     }
 
     /**
@@ -1248,7 +1235,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getRouter_CachedService()
     {
-        return $this->services['router.cached'] = new \Symfony\Bundle\FrameworkBundle\Routing\CachedRouter('/srv/www/zestfule/app/cache/dev', 'appdevUrlMatcher', 'appdevUrlGenerator');
+        return $this->services['router.cached'] = new \Symfony\Bundle\FrameworkBundle\Routing\CachedRouter('C:\\wamp\\www\\Zestfule\\app/cache/dev', 'appdevUrlMatcher', 'appdevUrlGenerator');
     }
 
     /**
@@ -1261,7 +1248,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getRouter_RealService()
     {
-        return $this->services['router.real'] = new \Symfony\Component\Routing\Router(new \Symfony\Bundle\FrameworkBundle\Routing\LazyLoader($this, 'routing.loader.real'), '/srv/www/zestfule/app/config/routing_dev.yml', array('cache_dir' => '/srv/www/zestfule/app/cache/dev', 'debug' => true, 'generator_class' => 'Symfony\\Component\\Routing\\Generator\\UrlGenerator', 'generator_base_class' => 'Symfony\\Component\\Routing\\Generator\\UrlGenerator', 'generator_dumper_class' => 'Symfony\\Component\\Routing\\Generator\\Dumper\\PhpGeneratorDumper', 'generator_cache_class' => 'appdevUrlGenerator', 'matcher_class' => 'Symfony\\Bundle\\FrameworkBundle\\Routing\\RedirectableUrlMatcher', 'matcher_base_class' => 'Symfony\\Bundle\\FrameworkBundle\\Routing\\RedirectableUrlMatcher', 'matcher_dumper_class' => 'Symfony\\Component\\Routing\\Matcher\\Dumper\\PhpMatcherDumper', 'matcher_cache_class' => 'appdevUrlMatcher'));
+        return $this->services['router.real'] = new \Symfony\Component\Routing\Router(new \Symfony\Bundle\FrameworkBundle\Routing\LazyLoader($this, 'routing.loader.real'), 'C:\\wamp\\www\\Zestfule\\app/config/routing_dev.yml', array('cache_dir' => 'C:\\wamp\\www\\Zestfule\\app/cache/dev', 'debug' => true, 'generator_class' => 'Symfony\\Component\\Routing\\Generator\\UrlGenerator', 'generator_base_class' => 'Symfony\\Component\\Routing\\Generator\\UrlGenerator', 'generator_dumper_class' => 'Symfony\\Component\\Routing\\Generator\\Dumper\\PhpGeneratorDumper', 'generator_cache_class' => 'appdevUrlGenerator', 'matcher_class' => 'Symfony\\Bundle\\FrameworkBundle\\Routing\\RedirectableUrlMatcher', 'matcher_base_class' => 'Symfony\\Bundle\\FrameworkBundle\\Routing\\RedirectableUrlMatcher', 'matcher_dumper_class' => 'Symfony\\Component\\Routing\\Matcher\\Dumper\\PhpMatcherDumper', 'matcher_cache_class' => 'appdevUrlMatcher'));
     }
 
     /**
@@ -1511,7 +1498,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSymfony_WebconfiguratorService()
     {
-        return $this->services['symfony.webconfigurator'] = new \Symfony\Bundle\WebConfiguratorBundle\Configurator('/srv/www/zestfule/app');
+        return $this->services['symfony.webconfigurator'] = new \Symfony\Bundle\WebConfiguratorBundle\Configurator('C:\\wamp\\www\\Zestfule\\app');
     }
 
     /**
@@ -1576,7 +1563,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getTemplating_Helper_CodeService()
     {
-        return $this->services['templating.helper.code'] = new \Symfony\Bundle\FrameworkBundle\Templating\Helper\CodeHelper('', '/srv/www/zestfule/app');
+        return $this->services['templating.helper.code'] = new \Symfony\Bundle\FrameworkBundle\Templating\Helper\CodeHelper('', 'C:\\wamp\\www\\Zestfule\\app');
     }
 
     /**
@@ -1775,7 +1762,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getTranslator_RealService()
     {
-        return $this->services['translator.real'] = new \Symfony\Bundle\FrameworkBundle\Translation\Translator($this, $this->get('translator.selector'), array('translation.loader.php' => 'php', 'translation.loader.yml' => 'yml', 'translation.loader.xliff' => 'xliff'), array('cache_dir' => '/srv/www/zestfule/app/cache/dev/translations', 'debug' => true), $this->get('session'));
+        return $this->services['translator.real'] = new \Symfony\Bundle\FrameworkBundle\Translation\Translator($this, $this->get('translator.selector'), array('translation.loader.php' => 'php', 'translation.loader.yml' => 'yml', 'translation.loader.xliff' => 'xliff'), array('cache_dir' => 'C:\\wamp\\www\\Zestfule\\app/cache/dev/translations', 'debug' => true), $this->get('session'));
     }
 
     /**
@@ -1788,7 +1775,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getTwigService()
     {
-        $this->services['twig'] = $instance = new \Twig_Environment($this->get('twig.loader'), array('debug' => true, 'strict_variables' => true, 'cache' => '/srv/www/zestfule/app/cache/dev/twig', 'charset' => 'UTF-8'));
+        $this->services['twig'] = $instance = new \Twig_Environment($this->get('twig.loader'), array('debug' => true, 'strict_variables' => true, 'cache' => 'C:\\wamp\\www\\Zestfule\\app/cache/dev/twig', 'charset' => 'UTF-8'));
 
         $instance->addExtension(new \Symfony\Bundle\SecurityBundle\Twig\Extension\SecurityExtension($this->get('security.context')));
         $instance->addExtension(new \Symfony\Bridge\Twig\Extension\TranslationExtension($this->get('translator')));
@@ -1797,7 +1784,6 @@ class appDevDebugProjectContainer extends Container
         $instance->addExtension(new \Symfony\Bridge\Twig\Extension\YamlExtension());
         $instance->addExtension(new \Symfony\Bridge\Twig\Extension\FormExtension(array(0 => 'TwigBundle:Form:div_layout.html.twig')));
         $instance->addExtension(new \Symfony\Bundle\AsseticBundle\Twig\AsseticExtension($this->get('assetic.asset_factory'), true, array()));
-        $instance->addExtension($this->get('twig.extension.acme.demo'));
 
         return $instance;
     }
@@ -1918,7 +1904,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getAssetic_AssetFactoryService()
     {
-        $this->services['assetic.asset_factory'] = $instance = new \Symfony\Bundle\AsseticBundle\Factory\AssetFactory($this->get('kernel'), '/srv/www/zestfule/app/../web', true);
+        $this->services['assetic.asset_factory'] = $instance = new \Symfony\Bundle\AsseticBundle\Factory\AssetFactory($this->get('kernel'), 'C:\\wamp\\www\\Zestfule\\app/../web', true);
 
         $instance->setFilterManager($this->get('assetic.filter_manager'));
         $instance->addWorker(new \Symfony\Bundle\AsseticBundle\Factory\Worker\UseControllerWorker());
@@ -1940,7 +1926,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getAssetic_CacheService()
     {
-        return $this->services['assetic.cache'] = new \Assetic\Cache\FilesystemCache('/srv/www/zestfule/app/cache/dev/assetic/assets');
+        return $this->services['assetic.cache'] = new \Assetic\Cache\FilesystemCache('C:\\wamp\\www\\Zestfule\\app/cache/dev/assetic/assets');
     }
 
     /**
@@ -2148,7 +2134,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getProfiler_StorageService()
     {
-        return $this->services['profiler.storage'] = new \Symfony\Component\HttpKernel\Profiler\SqliteProfilerStorage('sqlite:/srv/www/zestfule/app/cache/dev/profiler.db', '', '', 86400);
+        return $this->services['profiler.storage'] = new \Symfony\Component\HttpKernel\Profiler\SqliteProfilerStorage('sqlite:C:\\wamp\\www\\Zestfule\\app/cache/dev/profiler.db', '', '', 86400);
     }
 
     /**
@@ -2276,23 +2262,6 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
-     * Gets the 'twig.extension.acme.demo' service.
-     *
-     * This service is shared.
-     * This method always returns the same instance of the service.
-     *
-     * This service is private.
-     * If you want to be able to request this service from the container directly,
-     * make it public, otherwise you might end up with broken code.
-     *
-     * @return Acme\DemoBundle\Twig\Extension\DemoExtension A Acme\DemoBundle\Twig\Extension\DemoExtension instance.
-     */
-    protected function getTwig_Extension_Acme_DemoService()
-    {
-        return $this->services['twig.extension.acme.demo'] = new \Acme\DemoBundle\Twig\Extension\DemoExtension($this->get('twig.loader'));
-    }
-
-    /**
      * Gets the 'validator.mapping.class_metadata_factory' service.
      *
      * This service is shared.
@@ -2306,7 +2275,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getValidator_Mapping_ClassMetadataFactoryService()
     {
-        return $this->services['validator.mapping.class_metadata_factory'] = new \Symfony\Component\Validator\Mapping\ClassMetadataFactory(new \Symfony\Component\Validator\Mapping\Loader\LoaderChain(array(0 => new \Symfony\Component\Validator\Mapping\Loader\AnnotationLoader(array('assert' => 'Symfony\\Component\\Validator\\Constraints\\')), 1 => new \Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader(), 2 => new \Symfony\Component\Validator\Mapping\Loader\XmlFilesLoader(array(0 => '/srv/www/zestfule/vendor/symfony/src/Symfony/Bundle/FrameworkBundle/DependencyInjection/../../../Component/Form/Resources/config/validation.xml')), 3 => new \Symfony\Component\Validator\Mapping\Loader\YamlFilesLoader(array()))), NULL);
+        return $this->services['validator.mapping.class_metadata_factory'] = new \Symfony\Component\Validator\Mapping\ClassMetadataFactory(new \Symfony\Component\Validator\Mapping\Loader\LoaderChain(array(0 => new \Symfony\Component\Validator\Mapping\Loader\AnnotationLoader(array('assert' => 'Symfony\\Component\\Validator\\Constraints\\')), 1 => new \Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader(), 2 => new \Symfony\Component\Validator\Mapping\Loader\XmlFilesLoader(array(0 => 'C:\\wamp\\www\\Zestfule\\vendor\\symfony\\src\\Symfony\\Bundle\\FrameworkBundle\\DependencyInjection/../../../Component/Form/Resources/config/validation.xml')), 3 => new \Symfony\Component\Validator\Mapping\Loader\YamlFilesLoader(array()))), NULL);
     }
 
     /**
@@ -2346,12 +2315,12 @@ class appDevDebugProjectContainer extends Container
     protected function getDefaultParameters()
     {
         return array(
-            'kernel.root_dir' => '/srv/www/zestfule/app',
+            'kernel.root_dir' => 'C:\\wamp\\www\\Zestfule\\app',
             'kernel.environment' => 'dev',
             'kernel.debug' => true,
             'kernel.name' => 'app',
-            'kernel.cache_dir' => '/srv/www/zestfule/app/cache/dev',
-            'kernel.logs_dir' => '/srv/www/zestfule/app/logs',
+            'kernel.cache_dir' => 'C:\\wamp\\www\\Zestfule\\app/cache/dev',
+            'kernel.logs_dir' => 'C:\\wamp\\www\\Zestfule\\app/logs',
             'kernel.bundles' => array(
                 'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
                 'SecurityBundle' => 'Symfony\\Bundle\\SecurityBundle\\SecurityBundle',
@@ -2362,7 +2331,8 @@ class appDevDebugProjectContainer extends Container
                 'AsseticBundle' => 'Symfony\\Bundle\\AsseticBundle\\AsseticBundle',
                 'SensioFrameworkExtraBundle' => 'Sensio\\Bundle\\FrameworkExtraBundle\\SensioFrameworkExtraBundle',
                 'JMSSecurityExtraBundle' => 'JMS\\SecurityExtraBundle\\JMSSecurityExtraBundle',
-                'AcmeDemoBundle' => 'Acme\\DemoBundle\\AcmeDemoBundle',
+                'ZestfuleBlogBundle' => 'Zestfule\\BlogBundle\\ZestfuleBlogBundle',
+                'ZestfuleUserBundle' => 'Zestfule\\UserBundle\\ZestfuleUserBundle',
                 'WebProfilerBundle' => 'Symfony\\Bundle\\WebProfilerBundle\\WebProfilerBundle',
                 'SymfonyWebConfiguratorBundle' => 'Symfony\\Bundle\\WebConfiguratorBundle\\SymfonyWebConfiguratorBundle',
             ),
@@ -2370,7 +2340,7 @@ class appDevDebugProjectContainer extends Container
             'kernel.container_class' => 'appDevDebugProjectContainer',
             'database_driver' => 'pdo_mysql',
             'database_host' => 'localhost',
-            'database_name' => 'symfony',
+            'database_name' => 'zestfule',
             'database_user' => 'root',
             'database_password' => '',
             'mailer_transport' => 'smtp',
@@ -2378,7 +2348,7 @@ class appDevDebugProjectContainer extends Container
             'mailer_user' => '',
             'mailer_password' => '',
             'locale' => 'en',
-            'secret' => 'ThisTokenIsNotSoSecretChangeIt',
+            'secret' => '05bb703d8c4547c2a28530d25d484596c2cdd71e',
             'request_listener.class' => 'Symfony\\Bundle\\FrameworkBundle\\RequestListener',
             'controller_resolver.class' => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\ControllerResolver',
             'controller_name_converter.class' => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\ControllerNameParser',
@@ -2403,7 +2373,7 @@ class appDevDebugProjectContainer extends Container
             'translation.loader.xliff.class' => 'Symfony\\Component\\Translation\\Loader\\XliffFileLoader',
             'debug.event_dispatcher.class' => 'Symfony\\Bundle\\FrameworkBundle\\Debug\\TraceableEventDispatcher',
             'kernel.cache_warmup' => false,
-            'kernel.secret' => 'ThisTokenIsNotSoSecretChangeIt',
+            'kernel.secret' => '05bb703d8c4547c2a28530d25d484596c2cdd71e',
             'profiler.class' => 'Symfony\\Component\\HttpKernel\\Profiler\\Profiler',
             'profiler_listener.class' => 'Symfony\\Bundle\\FrameworkBundle\\Profiler\\ProfilerListener',
             'data_collector.config.class' => 'Symfony\\Component\\HttpKernel\\DataCollector\\ConfigDataCollector',
@@ -2544,7 +2514,7 @@ class appDevDebugProjectContainer extends Container
             'twig.options' => array(
                 'debug' => true,
                 'strict_variables' => true,
-                'cache' => '/srv/www/zestfule/app/cache/dev/twig',
+                'cache' => 'C:\\wamp\\www\\Zestfule\\app/cache/dev/twig',
                 'charset' => 'UTF-8',
             ),
             'monolog.logger.class' => 'Symfony\\Bundle\\MonologBundle\\Logger\\Logger',
@@ -2608,7 +2578,7 @@ class appDevDebugProjectContainer extends Container
             'form.type_guesser.doctrine.class' => 'Symfony\\Bridge\\Doctrine\\Form\\DoctrineOrmTypeGuesser',
             'doctrine.orm.default_entity_manager' => 'default',
             'doctrine.orm.auto_generate_proxy_classes' => true,
-            'doctrine.orm.proxy_dir' => '/srv/www/zestfule/app/cache/dev/doctrine/orm/Proxies',
+            'doctrine.orm.proxy_dir' => 'C:\\wamp\\www\\Zestfule\\app/cache/dev/doctrine/orm/Proxies',
             'doctrine.orm.proxy_namespace' => 'Proxies',
             'assetic.asset_factory.class' => 'Symfony\\Bundle\\AsseticBundle\\Factory\\AssetFactory',
             'assetic.asset_manager.class' => 'Assetic\\Factory\\LazyAssetManager',
@@ -2621,7 +2591,7 @@ class appDevDebugProjectContainer extends Container
             'assetic.node.paths' => array(
 
             ),
-            'assetic.cache_dir' => '/srv/www/zestfule/app/cache/dev/assetic',
+            'assetic.cache_dir' => 'C:\\wamp\\www\\Zestfule\\app/cache/dev/assetic',
             'assetic.twig_extension.class' => 'Symfony\\Bundle\\AsseticBundle\\Twig\\AsseticExtension',
             'assetic.twig_formula_loader.class' => 'Assetic\\Extension\\Twig\\TwigFormulaLoader',
             'assetic.helper.dynamic.class' => 'Symfony\\Bundle\\AsseticBundle\\Templating\\DynamicAsseticHelper',
@@ -2629,9 +2599,9 @@ class appDevDebugProjectContainer extends Container
             'assetic.php_formula_loader.class' => 'Symfony\\Bundle\\AsseticBundle\\Factory\\Loader\\AsseticHelperFormulaLoader',
             'assetic.debug' => true,
             'assetic.use_controller' => true,
-            'assetic.read_from' => '/srv/www/zestfule/app/../web',
-            'assetic.write_to' => '/srv/www/zestfule/app/../web',
-            'assetic.java.bin' => '/usr/bin/java',
+            'assetic.read_from' => 'C:\\wamp\\www\\Zestfule\\app/../web',
+            'assetic.write_to' => 'C:\\wamp\\www\\Zestfule\\app/../web',
+            'assetic.java.bin' => 'C:\\Windows\\system32\\java.EXE',
             'assetic.node.bin' => '/usr/bin/node',
             'assetic.sass.bin' => '/usr/bin/sass',
             'assetic.filter.cssrewrite.class' => 'Assetic\\Filter\\CssRewriteFilter',
