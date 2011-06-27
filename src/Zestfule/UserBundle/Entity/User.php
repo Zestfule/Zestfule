@@ -2,14 +2,15 @@
 
 namespace Zestfule\UserBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface,
+    Doctrine\ORM\Mapping as ORM,
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
  */
-class User implements UserInterface {
+class User {
 
     /**
      * @ORM\Id
@@ -35,3 +36,5 @@ class User implements UserInterface {
     protected $password;
 
 }
+
+?>

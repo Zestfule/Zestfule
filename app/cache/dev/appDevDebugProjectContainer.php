@@ -338,13 +338,19 @@ class appDevDebugProjectContainer extends Container
         $c = new \Doctrine\Common\Cache\ArrayCache();
         $c->setNamespace('sf2orm_default_afb66c3e7fca12bab1c127057bfd4ada');
 
+        $d = new \Doctrine\Common\Annotations\AnnotationReader();
+        $d->setAnnotationNamespaceAlias('Doctrine\\ORM\\Mapping\\', 'orm');
+
+        $e = new \Doctrine\ORM\Mapping\Driver\DriverChain();
+        $e->addDriver(new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($d, array(0 => 'C:\\wamp\\www\\Zestfule\\src\\Zestfule\\UserBundle\\Entity')), 'Zestfule\\UserBundle\\Entity');
+
         $this->services['doctrine.orm.default_configuration'] = $instance = new \Doctrine\ORM\Configuration();
 
-        $instance->setEntityNamespaces(array());
+        $instance->setEntityNamespaces(array('ZestfuleUserBundle' => 'Zestfule\\UserBundle\\Entity'));
         $instance->setMetadataCacheImpl($a);
         $instance->setQueryCacheImpl($b);
         $instance->setResultCacheImpl($c);
-        $instance->setMetadataDriverImpl(new \Doctrine\ORM\Mapping\Driver\DriverChain());
+        $instance->setMetadataDriverImpl($e);
         $instance->setProxyDir('C:\\wamp\\www\\Zestfule\\app/cache/dev/doctrine/orm/Proxies');
         $instance->setProxyNamespace('Proxies');
         $instance->setAutoGenerateProxyClasses(true);
@@ -1318,7 +1324,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_EncoderFactoryService()
     {
-        return $this->services['security.encoder_factory'] = new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array('Symfony\\Component\\Security\\Core\\User\\User' => array('class' => 'Symfony\\Component\\Security\\Core\\Encoder\\PlaintextPasswordEncoder', 'arguments' => array(0 => false))));
+        return $this->services['security.encoder_factory'] = new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array('Zestfule\\UserBundle\\Entity\\User' => array('class' => 'Symfony\\Component\\Security\\Core\\Encoder\\MessageDigestPasswordEncoder', 'arguments' => array(0 => 'sha512', 1 => true, 2 => 10))));
     }
 
     /**
@@ -1344,69 +1350,33 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_FirewallService()
     {
-        return $this->services['security.firewall'] = new \Symfony\Component\Security\Http\Firewall(new \Symfony\Bundle\SecurityBundle\Security\FirewallMap($this, array('security.firewall.map.context.profiler' => new \Symfony\Component\HttpFoundation\RequestMatcher('^/_profiler'), 'security.firewall.map.context.wdt' => new \Symfony\Component\HttpFoundation\RequestMatcher('^/_wdt'), 'security.firewall.map.context.login' => new \Symfony\Component\HttpFoundation\RequestMatcher('^/demo/secured/login$'), 'security.firewall.map.context.secured_area' => new \Symfony\Component\HttpFoundation\RequestMatcher('^/demo/secured/'))), $this->get('event_dispatcher'));
+        return $this->services['security.firewall'] = new \Symfony\Component\Security\Http\Firewall(new \Symfony\Bundle\SecurityBundle\Security\FirewallMap($this, array('security.firewall.map.context.main' => new \Symfony\Component\HttpFoundation\RequestMatcher('^/'))), $this->get('event_dispatcher'));
     }
 
     /**
-     * Gets the 'security.firewall.map.context.login' service.
+     * Gets the 'security.firewall.map.context.main' service.
      *
      * This service is shared.
      * This method always returns the same instance of the service.
      *
      * @return Symfony\Bundle\SecurityBundle\Security\FirewallContext A Symfony\Bundle\SecurityBundle\Security\FirewallContext instance.
      */
-    protected function getSecurity_Firewall_Map_Context_LoginService()
-    {
-        return $this->services['security.firewall.map.context.login'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(), NULL);
-    }
-
-    /**
-     * Gets the 'security.firewall.map.context.profiler' service.
-     *
-     * This service is shared.
-     * This method always returns the same instance of the service.
-     *
-     * @return Symfony\Bundle\SecurityBundle\Security\FirewallContext A Symfony\Bundle\SecurityBundle\Security\FirewallContext instance.
-     */
-    protected function getSecurity_Firewall_Map_Context_ProfilerService()
-    {
-        return $this->services['security.firewall.map.context.profiler'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(), NULL);
-    }
-
-    /**
-     * Gets the 'security.firewall.map.context.secured_area' service.
-     *
-     * This service is shared.
-     * This method always returns the same instance of the service.
-     *
-     * @return Symfony\Bundle\SecurityBundle\Security\FirewallContext A Symfony\Bundle\SecurityBundle\Security\FirewallContext instance.
-     */
-    protected function getSecurity_Firewall_Map_Context_SecuredAreaService()
+    protected function getSecurity_Firewall_Map_Context_MainService()
     {
         $a = $this->get('monolog.logger.security');
         $b = $this->get('security.context');
         $c = $this->get('event_dispatcher');
         $d = $this->get('security.authentication.manager');
 
-        $e = new \Symfony\Component\Security\Http\AccessMap();
+        $e = new \Symfony\Component\HttpFoundation\RequestMatcher('/admin/.*');
 
-        $f = new \Symfony\Component\Security\Http\Firewall\LogoutListener($b, '/demo/secured/logout', '/demo/', NULL);
-        $f->addHandler(new \Symfony\Component\Security\Http\Logout\SessionLogoutHandler());
+        $f = new \Symfony\Component\HttpFoundation\RequestMatcher('/.*');
 
-        return $this->services['security.firewall.map.context.secured_area'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($e, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $this->get('security.user.provider.concrete.in_memory')), 'secured_area', $a, $c), 2 => $f, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $d, new \Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy('migrate'), 'secured_area', array('check_path' => '/demo/secured/login_check', 'login_path' => '/demo/secured/login', 'use_forward' => false, 'always_use_default_target_path' => false, 'default_target_path' => '/', 'target_path_parameter' => '_target_path', 'use_referer' => false, 'failure_path' => NULL, 'failure_forward' => false, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'csrf_page_id' => 'form_login', 'post_only' => true), NULL, NULL, $a, $c), 4 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $e, $d, $a)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($this->get('http_kernel'), '/demo/secured/login', false), NULL, NULL, $a));
-    }
+        $g = new \Symfony\Component\Security\Http\AccessMap();
+        $g->add($e, array(0 => 'ROLE_ADMIN'), NULL);
+        $g->add($f, array(0 => 'IS_AUTHENTICATED_ANONYMOUSLY'), NULL);
 
-    /**
-     * Gets the 'security.firewall.map.context.wdt' service.
-     *
-     * This service is shared.
-     * This method always returns the same instance of the service.
-     *
-     * @return Symfony\Bundle\SecurityBundle\Security\FirewallContext A Symfony\Bundle\SecurityBundle\Security\FirewallContext instance.
-     */
-    protected function getSecurity_Firewall_Map_Context_WdtService()
-    {
-        return $this->services['security.firewall.map.context.wdt'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(), NULL);
+        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($g, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $this->get('security.user.provider.concrete.main')), 'main', $a, $c), 2 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $d, new \Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy('migrate'), 'main', array('check_path' => '/login_check', 'login_path' => '/login', 'use_forward' => false, 'always_use_default_target_path' => false, 'default_target_path' => '/', 'target_path_parameter' => '_target_path', 'use_referer' => false, 'failure_path' => NULL, 'failure_forward' => false, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'csrf_page_id' => 'form_login', 'post_only' => true), NULL, NULL, $a, $c), 3 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '4e089ed5a94ca', $a), 4 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $g, $d, $a)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($this->get('http_kernel'), '/login', false), NULL, NULL, $a));
     }
 
     /**
@@ -2151,7 +2121,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_Access_DecisionManagerService()
     {
-        return $this->services['security.access.decision_manager'] = new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager(array(0 => new \Symfony\Component\Security\Core\Authorization\Voter\RoleHierarchyVoter(new \Symfony\Component\Security\Core\Role\RoleHierarchy(array('ROLE_ADMIN' => array(0 => 'ROLE_USER'), 'ROLE_SUPER_ADMIN' => array(0 => 'ROLE_USER', 1 => 'ROLE_ADMIN', 2 => 'ROLE_ALLOWED_TO_SWITCH')))), 1 => new \Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter($this->get('security.authentication.trust_resolver'))), 'affirmative', false, true);
+        return $this->services['security.access.decision_manager'] = new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager(array(0 => new \Symfony\Component\Security\Core\Authorization\Voter\RoleHierarchyVoter(new \Symfony\Component\Security\Core\Role\RoleHierarchy(array())), 1 => new \Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter($this->get('security.authentication.trust_resolver'))), 'affirmative', false, true);
     }
 
     /**
@@ -2168,7 +2138,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_Authentication_ManagerService()
     {
-        return $this->services['security.authentication.manager'] = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('security.user.provider.concrete.in_memory'), new \Symfony\Component\Security\Core\User\UserChecker(), 'secured_area', $this->get('security.encoder_factory'))));
+        return $this->services['security.authentication.manager'] = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('security.user.provider.concrete.main'), new \Symfony\Component\Security\Core\User\UserChecker(), 'main', $this->get('security.encoder_factory')), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('4e089ed5a94ca')));
     }
 
     /**
@@ -2189,7 +2159,7 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
-     * Gets the 'security.user.provider.concrete.in_memory' service.
+     * Gets the 'security.user.provider.concrete.main' service.
      *
      * This service is shared.
      * This method always returns the same instance of the service.
@@ -2198,16 +2168,11 @@ class appDevDebugProjectContainer extends Container
      * If you want to be able to request this service from the container directly,
      * make it public, otherwise you might end up with broken code.
      *
-     * @return Symfony\Component\Security\Core\User\InMemoryUserProvider A Symfony\Component\Security\Core\User\InMemoryUserProvider instance.
+     * @return Symfony\Component\Security\Core\User\EntityUserProvider A Symfony\Component\Security\Core\User\EntityUserProvider instance.
      */
-    protected function getSecurity_User_Provider_Concrete_InMemoryService()
+    protected function getSecurity_User_Provider_Concrete_MainService()
     {
-        $this->services['security.user.provider.concrete.in_memory'] = $instance = new \Symfony\Component\Security\Core\User\InMemoryUserProvider();
-
-        $instance->createUser(new \Symfony\Component\Security\Core\User\User('user', 'userpass', array(0 => 'ROLE_USER')));
-        $instance->createUser(new \Symfony\Component\Security\Core\User\User('admin', 'adminpass', array(0 => 'ROLE_ADMIN')));
-
-        return $instance;
+        return $this->services['security.user.provider.concrete.main'] = new \Symfony\Component\Security\Core\User\EntityUserProvider($this->get('doctrine.orm.default_entity_manager'), 'Zestfule\\UserBundle\\Entity\\User', 'id');
     }
 
     /**
@@ -2495,14 +2460,7 @@ class appDevDebugProjectContainer extends Container
             'security.access.denied_url' => NULL,
             'security.access.always_authenticate_before_granting' => false,
             'security.role_hierarchy.roles' => array(
-                'ROLE_ADMIN' => array(
-                    0 => 'ROLE_USER',
-                ),
-                'ROLE_SUPER_ADMIN' => array(
-                    0 => 'ROLE_USER',
-                    1 => 'ROLE_ADMIN',
-                    2 => 'ROLE_ALLOWED_TO_SWITCH',
-                ),
+
             ),
             'twig.class' => 'Twig_Environment',
             'twig.loader.class' => 'Symfony\\Bundle\\TwigBundle\\Loader\\FilesystemLoader',
@@ -2724,43 +2682,44 @@ class appDevDebugProjectContainer extends Container
                 41 => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\ControllerResolver',
                 42 => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller',
                 43 => 'Symfony\\Bundle\\FrameworkBundle\\ContainerAwareEventDispatcher',
-                44 => 'Symfony\\Component\\Security\\Http\\Firewall',
-                45 => 'Symfony\\Component\\Security\\Http\\FirewallMapInterface',
-                46 => 'Symfony\\Component\\Security\\Core\\SecurityContext',
-                47 => 'Symfony\\Component\\Security\\Core\\SecurityContextInterface',
-                48 => 'Symfony\\Component\\Security\\Core\\User\\UserProviderInterface',
-                49 => 'Symfony\\Component\\Security\\Core\\Authentication\\AuthenticationProviderManager',
-                50 => 'Symfony\\Component\\Security\\Core\\Authentication\\AuthenticationManagerInterface',
-                51 => 'Symfony\\Component\\Security\\Core\\Authorization\\AccessDecisionManager',
-                52 => 'Symfony\\Component\\Security\\Core\\Authorization\\AccessDecisionManagerInterface',
-                53 => 'Symfony\\Component\\Security\\Core\\Authorization\\Voter\\VoterInterface',
-                54 => 'Symfony\\Bundle\\SecurityBundle\\Security\\FirewallMap',
-                55 => 'Symfony\\Bundle\\SecurityBundle\\Security\\FirewallContext',
-                56 => 'Symfony\\Component\\HttpFoundation\\RequestMatcher',
-                57 => 'Symfony\\Component\\HttpFoundation\\RequestMatcherInterface',
-                58 => 'Twig_Environment',
-                59 => 'Twig_ExtensionInterface',
-                60 => 'Twig_Extension',
-                61 => 'Twig_Extension_Core',
-                62 => 'Twig_Extension_Escaper',
-                63 => 'Twig_Extension_Optimizer',
-                64 => 'Twig_LoaderInterface',
-                65 => 'Twig_Markup',
-                66 => 'Twig_TemplateInterface',
-                67 => 'Twig_Template',
-                68 => 'Monolog\\Formatter\\FormatterInterface',
-                69 => 'Monolog\\Formatter\\LineFormatter',
-                70 => 'Monolog\\Handler\\HandlerInterface',
-                71 => 'Monolog\\Handler\\AbstractHandler',
-                72 => 'Monolog\\Handler\\StreamHandler',
-                73 => 'Monolog\\Handler\\FingersCrossedHandler',
-                74 => 'Monolog\\Logger',
-                75 => 'Symfony\\Bundle\\MonologBundle\\Logger\\Logger',
-                76 => 'Symfony\\Bundle\\MonologBundle\\Logger\\DebugHandler',
-                77 => 'JMS\\SecurityExtraBundle\\Controller\\ControllerListener',
-                78 => 'JMS\\SecurityExtraBundle\\Mapping\\Driver\\AnnotationParser',
-                79 => 'JMS\\SecurityExtraBundle\\Mapping\\Driver\\AnnotationConverter',
-                80 => 'JMS\\SecurityExtraBundle\\Security\\Authorization\\Interception\\MethodInvocation',
+                44 => 'Symfony\\Component\\Security\\Http\\AccessMap',
+                45 => 'Symfony\\Component\\Security\\Http\\Firewall',
+                46 => 'Symfony\\Component\\Security\\Http\\FirewallMapInterface',
+                47 => 'Symfony\\Component\\Security\\Core\\SecurityContext',
+                48 => 'Symfony\\Component\\Security\\Core\\SecurityContextInterface',
+                49 => 'Symfony\\Component\\Security\\Core\\User\\UserProviderInterface',
+                50 => 'Symfony\\Component\\Security\\Core\\Authentication\\AuthenticationProviderManager',
+                51 => 'Symfony\\Component\\Security\\Core\\Authentication\\AuthenticationManagerInterface',
+                52 => 'Symfony\\Component\\Security\\Core\\Authorization\\AccessDecisionManager',
+                53 => 'Symfony\\Component\\Security\\Core\\Authorization\\AccessDecisionManagerInterface',
+                54 => 'Symfony\\Component\\Security\\Core\\Authorization\\Voter\\VoterInterface',
+                55 => 'Symfony\\Bundle\\SecurityBundle\\Security\\FirewallMap',
+                56 => 'Symfony\\Bundle\\SecurityBundle\\Security\\FirewallContext',
+                57 => 'Symfony\\Component\\HttpFoundation\\RequestMatcher',
+                58 => 'Symfony\\Component\\HttpFoundation\\RequestMatcherInterface',
+                59 => 'Twig_Environment',
+                60 => 'Twig_ExtensionInterface',
+                61 => 'Twig_Extension',
+                62 => 'Twig_Extension_Core',
+                63 => 'Twig_Extension_Escaper',
+                64 => 'Twig_Extension_Optimizer',
+                65 => 'Twig_LoaderInterface',
+                66 => 'Twig_Markup',
+                67 => 'Twig_TemplateInterface',
+                68 => 'Twig_Template',
+                69 => 'Monolog\\Formatter\\FormatterInterface',
+                70 => 'Monolog\\Formatter\\LineFormatter',
+                71 => 'Monolog\\Handler\\HandlerInterface',
+                72 => 'Monolog\\Handler\\AbstractHandler',
+                73 => 'Monolog\\Handler\\StreamHandler',
+                74 => 'Monolog\\Handler\\FingersCrossedHandler',
+                75 => 'Monolog\\Logger',
+                76 => 'Symfony\\Bundle\\MonologBundle\\Logger\\Logger',
+                77 => 'Symfony\\Bundle\\MonologBundle\\Logger\\DebugHandler',
+                78 => 'JMS\\SecurityExtraBundle\\Controller\\ControllerListener',
+                79 => 'JMS\\SecurityExtraBundle\\Mapping\\Driver\\AnnotationParser',
+                80 => 'JMS\\SecurityExtraBundle\\Mapping\\Driver\\AnnotationConverter',
+                81 => 'JMS\\SecurityExtraBundle\\Security\\Authorization\\Interception\\MethodInvocation',
             ),
         );
     }
